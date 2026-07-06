@@ -248,4 +248,3 @@ function showMilestoneTakeover(state, milestone, callbacks) {
   document.body.appendChild(takeover);
   fireConfetti();
 }
-                        
