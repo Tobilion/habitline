@@ -1,6 +1,6 @@
 # Habitline
 
-A polished, single-file habit tracker. No build step, no backend, no dependencies — just `index.html`. All data lives in your browser's `localStorage`.
+A polished habit tracker built as modular ES modules. No build step, no backend, no dependencies — just static files (`index.html`, `styles/*.css`, `js/**/*.js`). All data lives in your browser's `localStorage`.
 
 ## Features
 
@@ -15,9 +15,9 @@ A polished, single-file habit tracker. No build step, no backend, no dependencie
 
 ## Running it
 
-**Double-click:** just open `index.html` in any modern browser. It works with no server, since everything (state, styles, scripts) lives in the one file and storage is local to the browser.
+**Important: this app uses native ES modules (`<script type="module">` + `import`/`export`), so it must be served over `http://` — most browsers (Chrome included) block module scripts loaded via `file://`.** Double-clicking `index.html` will not work.
 
-**Local server (optional):** from this folder, run one of:
+From this folder, run one of:
 
 ```
 python3 -m http.server 8080
@@ -29,11 +29,11 @@ Then visit `http://localhost:8080`.
 
 ## Deploying as a static site
 
-Since it's a single static HTML file with zero build step, any static host works:
+It's a static site with zero build step, so any static host works — just make sure the whole folder structure (`index.html`, `styles/`, `js/`) is uploaded together, preserving relative paths:
 
 - **GitHub Pages** — push this folder to a repo, enable Pages on the branch/folder, done.
 - **Netlify / Vercel / Cloudflare Pages** — drag-and-drop the folder (or connect the repo); no build command needed, output directory is the repo root.
-- **Any web server / S3 bucket / etc.** — just upload `index.html`.
+- **Any web server / S3 bucket / etc.** — upload `index.html` plus the `styles/` and `js/` directories.
 
 ## Data & privacy
 
@@ -42,4 +42,5 @@ All habit data is stored only in the browser's `localStorage` under the key `hab
 ## Notes
 
 - Streak and heatmap math use **local calendar dates**, not UTC, so a habit checked at 11pm always counts for that day regardless of timezone.
-- The state schema is versioned (`version: 1`) with a migration path built in, so future updates to the data shape can upgrade old exports/localStorage automatically.
+- The state schema is versioned (currently `version: 2`) with a migration path built in, so future updates to the data shape can upgrade old exports/localStorage automatically.
+- The codebase is split into ES modules under `js/` (state, dates, streak logic, reusable UI components, per-screen assembly) and CSS under `styles/` — see `CLAUDE.md` for the full module map.

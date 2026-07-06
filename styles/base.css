@@ -1,0 +1,68 @@
+/*
+  Base resets, typography, global element defaults, reduced-motion override.
+  Loaded after tokens.css, before components.css/screens.css.
+*/
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji";
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.wrap { max-width: 720px; margin: 0 auto; padding: 24px 16px 96px; position: relative; z-index: 1; }
+
+button { font-family: inherit; cursor: pointer; }
+input, select { font-family: inherit; }
+a { color: inherit; text-decoration: none; }
+::selection { background: rgba(16, 185, 129, 0.35); }
+
+h1, h2, h3, p { margin: 0; }
+
+.accent-text {
+  background: var(--grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.section-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin: 0 0 6px;
+}
+.section-heading { margin: 28px 0 12px; }
+.section-heading:first-child { margin-top: 0; }
+.section-heading h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap;
+}
+
+/* Fade-up entry animation, used by section containers on render */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.fade-up {
+  animation: fadeUp 650ms var(--ease) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    transition-duration: 0.001s !important;
+    animation-duration: 0.001s !important;
+    scroll-behavior: auto !important;
+  }
+  .fade-up { animation: none !important; opacity: 1 !important; transform: none !important; }
+}

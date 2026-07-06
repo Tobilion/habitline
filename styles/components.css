@@ -1,0 +1,235 @@
+/*
+  Reusable component classes: buttons, cards, modal, toast, badges, nav, rings, etc.
+  Paired JS behavior lives in js/components/*.js — this file only has the visual styles.
+*/
+
+/* ---------- Buttons ---------- */
+.btn {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 200ms var(--ease), background 200ms var(--ease), border-color 200ms var(--ease),
+    box-shadow 200ms var(--ease);
+}
+.btn:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+.btn:active { transform: scale(0.97); }
+.btn-primary {
+  border: none;
+  color: #04231a;
+  background: var(--grad);
+  box-shadow: 0 4px 20px -6px rgba(16, 185, 129, 0.5);
+}
+.btn-primary:hover { filter: brightness(1.06); box-shadow: 0 6px 26px -6px rgba(16, 185, 129, 0.65); }
+.btn-ghost { background: transparent; border-color: transparent; color: var(--muted); }
+.btn-ghost:hover { color: var(--text); background: rgba(255, 255, 255, 0.04); }
+.btn-danger { color: var(--danger); border-color: rgba(248, 113, 113, 0.3); }
+.btn-danger:hover { background: rgba(248, 113, 113, 0.08); }
+.btn-icon { padding: 8px; border-radius: 10px; line-height: 0; }
+.btn:disabled { opacity: 0.35; cursor: not-allowed; transform: none; }
+
+/* MagneticButton wrapper — translate applied inline via JS transform */
+.magnetic-btn { display: inline-block; will-change: transform; transition: transform 200ms var(--ease-bounce); }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 18px;
+  position: relative;
+  transition: border-color 200ms var(--ease), transform 200ms var(--ease), box-shadow 200ms var(--ease);
+}
+.card:hover { border-color: var(--border-hover); transform: translateY(-3px); box-shadow: var(--shadow); }
+
+/* SpotlightCard — cursor-follow radial glow, --mx/--my set by js/components/spotlightCard.js */
+.spotlight-card { position: relative; overflow: hidden; }
+.spotlight-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 250ms var(--ease);
+  background: radial-gradient(350px circle at var(--mx, 50%) var(--my, 50%), rgba(16, 185, 129, 0.08), transparent 80%);
+  pointer-events: none;
+}
+.spotlight-card.spotlight-active::before { opacity: 1; }
+
+/* TiltCard — perspective tilt, transform set inline by js/components/tiltCard.js */
+.tilt-card { transform-style: preserve-3d; transition: transform 250ms var(--ease-bounce); will-change: transform; }
+
+/* ---------- Habit cards ---------- */
+.habit-card { display: flex; flex-direction: column; gap: 12px; }
+.habit-card.archived { opacity: 0.55; }
+.habit-row { display: flex; align-items: center; gap: 14px; }
+.habit-icon {
+  width: 44px; height: 44px; border-radius: 12px; flex: none;
+  display: flex; align-items: center; justify-content: center; font-size: 20px;
+}
+.habit-meta { flex: 1; min-width: 0; }
+.habit-name { font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+.habit-sub { color: var(--muted); font-size: 12.5px; margin-top: 2px; display: flex; gap: 10px; flex-wrap: wrap; }
+.flame { font-size: 12px; }
+.card-actions { display: flex; gap: 2px; flex: none; }
+
+/* ---------- Check ring (per-habit today check button) ---------- */
+.check-ring {
+  position: relative; flex: none; width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--border); background: transparent;
+  transition: transform 200ms var(--ease), border-color 200ms var(--ease), background 200ms var(--ease);
+  outline: none;
+}
+.check-ring:focus-visible { box-shadow: 0 0 0 3px rgba(45, 212, 191, 0.45); }
+.check-ring .emoji { font-size: 22px; transition: transform 200ms var(--ease); }
+.check-ring.done { border-color: transparent; background: var(--grad); }
+.check-ring.done.pop { animation: pop 280ms ease; }
+@keyframes pop { 0% { transform: scale(1); } 45% { transform: scale(1.22); } 100% { transform: scale(1); } }
+.check-ring svg.ring-progress { position: absolute; inset: -2px; transform: rotate(-90deg); pointer-events: none; }
+
+/* ---------- Week strip ---------- */
+.week-strip { display: flex; gap: 6px; margin-top: 4px; }
+.week-cell {
+  flex: 1; aspect-ratio: 1; border-radius: 8px; border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02); position: relative; min-width: 0;
+  transition: transform 200ms var(--ease), background 200ms var(--ease);
+  outline: none;
+}
+.week-cell:focus-visible { box-shadow: 0 0 0 2px rgba(45, 212, 191, 0.5); }
+.week-cell.done { background: var(--grad); border-color: transparent; }
+.week-cell.missed { background: rgba(248, 113, 113, 0.14); border-color: rgba(248, 113, 113, 0.25); }
+.week-cell.unscheduled { background: transparent; border-style: dashed; opacity: 0.28; }
+.week-cell.future { opacity: 0.25; cursor: not-allowed; }
+.week-cell.today { border-color: var(--accent-2); }
+.week-cell:not(.future):not(.unscheduled):hover { transform: scale(1.08); }
+.week-labels { display: flex; gap: 6px; margin-top: 4px; }
+.week-labels span { flex: 1; text-align: center; font-size: 9px; color: var(--muted-2); min-width: 0; }
+
+/* Note input that slides open under a habit card after checking */
+.note-slide {
+  overflow: hidden; max-height: 0; opacity: 0;
+  transition: max-height 250ms var(--ease), opacity 200ms var(--ease);
+}
+.note-slide.open { max-height: 80px; opacity: 1; margin-top: 6px; }
+.note-slide input {
+  width: 100%; background: #0e141b; border: 1px solid var(--border); border-radius: 10px;
+  padding: 9px 11px; color: var(--text); font-size: 13px; outline: none;
+  transition: border-color 200ms var(--ease);
+}
+.note-slide input:focus { border-color: var(--accent-2); }
+
+/* ---------- Modal ---------- */
+.modal-backdrop {
+  position: fixed; inset: 0; background: rgba(4, 6, 9, 0.6); backdrop-filter: blur(8px);
+  display: flex; align-items: flex-end; justify-content: center; z-index: 200;
+  opacity: 0; pointer-events: none; transition: opacity 200ms var(--ease);
+}
+.modal-backdrop.open { opacity: 1; pointer-events: auto; }
+@media (min-width: 520px) { .modal-backdrop { align-items: center; } }
+.modal {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 20px 20px 0 0;
+  width: 100%; max-width: 480px; padding: 22px; max-height: 88vh; overflow-y: auto;
+  transform: translateY(8px) scale(0.96); transition: transform 200ms var(--ease);
+}
+@media (min-width: 520px) { .modal { border-radius: 20px; } }
+.modal-backdrop.open .modal { transform: translateY(0) scale(1); }
+.modal h2 { margin: 0 0 16px; font-size: 18px; }
+.modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.modal-actions .btn { flex: 1; }
+
+/* ---------- Form fields ---------- */
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 12.5px; color: var(--muted); margin-bottom: 6px; font-weight: 600; }
+.field input[type="text"] {
+  width: 100%; background: #0e141b; border: 1px solid var(--border); border-radius: 10px;
+  padding: 11px 12px; color: var(--text); font-size: 14px; outline: none;
+  transition: border-color 200ms var(--ease);
+}
+.field input[type="text"]:focus { border-color: var(--accent-2); }
+.hint { color: var(--muted-2); font-size: 11.5px; margin-top: 6px; }
+
+.emoji-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; }
+.emoji-opt {
+  aspect-ratio: 1; border-radius: 10px; border: 1px solid var(--border); background: #0e141b;
+  display: flex; align-items: center; justify-content: center; font-size: 18px;
+  transition: transform 200ms var(--ease), border-color 200ms var(--ease);
+}
+.emoji-opt.sel { border-color: var(--accent-2); background: rgba(45, 212, 191, 0.12); transform: scale(1.05); }
+
+.color-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.color-opt { width: 30px; height: 30px; border-radius: 50%; border: 2px solid transparent; transition: transform 200ms var(--ease), border-color 200ms var(--ease); }
+.color-opt.sel { border-color: #fff; transform: scale(1.12); }
+
+.day-row { display: flex; gap: 6px; }
+.day-btn {
+  flex: 1; padding: 8px 0; border-radius: 10px; border: 1px solid var(--border); background: #0e141b;
+  color: var(--muted); font-size: 12px; font-weight: 700; transition: 200ms var(--ease);
+}
+.day-btn.sel { color: #04231a; border-color: transparent; background: var(--grad); }
+
+/* ---------- TubelightNav ---------- */
+.tubelight-nav {
+  position: relative; display: inline-flex; gap: 2px; padding: 4px; background: var(--surface-2);
+  border: 1px solid var(--border); border-radius: 999px;
+}
+.tubelight-item {
+  position: relative; z-index: 1; padding: 8px 16px; border-radius: 999px; background: transparent;
+  border: none; color: var(--muted); font-size: 13px; font-weight: 600;
+  transition: color 200ms var(--ease);
+}
+.tubelight-item.active { color: #04231a; }
+.tubelight-pill {
+  position: absolute; top: 4px; bottom: 4px; left: 0; border-radius: 999px; background: var(--grad);
+  box-shadow: 0 0 24px rgba(16, 185, 129, 0.45);
+  transition: left 200ms var(--ease), width 200ms var(--ease);
+}
+
+/* ---------- Empty state ---------- */
+.empty { text-align: center; padding: 60px 20px; border: 1px dashed var(--border); border-radius: var(--radius-lg); }
+.empty svg { width: 120px; height: 120px; margin-bottom: 12px; opacity: 0.85; }
+.empty p.headline { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.empty p.sub { color: var(--muted); margin: 0 0 18px; font-size: 14px; }
+
+/* ---------- Toast ---------- */
+.toast-stack {
+  position: fixed; right: 16px; bottom: 16px; z-index: 300;
+  display: flex; flex-direction: column-reverse; gap: 10px; width: min(320px, calc(100vw - 32px));
+}
+.toast {
+  position: relative; background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--accent); border-radius: 12px; padding: 12px 14px;
+  box-shadow: var(--shadow); display: flex; gap: 10px; align-items: flex-start;
+  overflow: hidden; animation: toastIn 220ms var(--ease) both;
+}
+.toast.toast-error { border-left-color: var(--danger); }
+.toast.toast-info { border-left-color: #60a5fa; }
+.toast .toast-icon { font-size: 16px; line-height: 1.3; }
+.toast .toast-msg { font-size: 13px; flex: 1; }
+.toast .toast-progress {
+  position: absolute; left: 0; bottom: 0; height: 2px; background: var(--accent);
+  animation: toastShrink 3.5s linear forwards;
+}
+@keyframes toastIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: translateX(0); } }
+@keyframes toastShrink { from { width: 100%; } to { width: 0%; } }
+
+/* ---------- Badges / flames / misc ---------- */
+.badge {
+  display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px;
+  background: var(--surface-2); border: 1px solid var(--border); font-size: 12px; font-weight: 600;
+}
+.badge.badge-locked { opacity: 0.4; }
+
+/* ---------- GlowOrb ---------- */
+.glow-orb {
+  position: fixed; border-radius: 50%; pointer-events: none; z-index: 0;
+  filter: blur(180px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover, .card:hover, .magnetic-btn, .tilt-card, .check-ring, .week-cell {
+    transform: none !important;
+  }
+}

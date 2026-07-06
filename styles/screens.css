@@ -1,0 +1,123 @@
+/*
+  Layout specifics for each screen: header/nav, today hero, stats, settings, landing.
+  Component-level visuals live in components.css; this file is screen composition only.
+*/
+
+/* ---------- Header ---------- */
+header.top {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px; padding: 12px 0; background: rgba(10, 12, 16, 0.85);
+  backdrop-filter: blur(10px);
+}
+header.top .brand { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; }
+header.top .date-chip { font-size: 12px; color: var(--muted); }
+
+/* ---------- Today: hero ---------- */
+.hero {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 24px; margin-bottom: 20px; display: flex; align-items: center; gap: 20px;
+  box-shadow: var(--shadow-lg); position: relative; overflow: hidden;
+}
+.hero.perfect { animation: heroPulse 2.4s ease-in-out infinite; }
+@keyframes heroPulse {
+  0%, 100% { box-shadow: var(--shadow-lg); }
+  50% { box-shadow: 0 10px 40px -8px rgba(16, 185, 129, 0.55); }
+}
+.hero .ring-wrap { position: relative; width: 88px; height: 88px; flex: none; }
+.hero .info { min-width: 0; }
+.hero .info .date { color: var(--muted); font-size: 13px; margin-bottom: 4px; }
+.hero .info .msg { font-size: 16px; font-weight: 600; }
+.hero .info .counter { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+.perfect-banner {
+  background: var(--grad); color: #04231a; border-radius: var(--radius); padding: 12px 16px;
+  font-weight: 700; font-size: 14px; text-align: center; margin-bottom: 16px;
+}
+
+.habit-list { display: flex; flex-direction: column; gap: 12px; }
+.fab-row { display: flex; justify-content: center; margin-top: 20px; }
+
+/* ---------- Stats ---------- */
+.heatmap-scroll { overflow-x: auto; padding-bottom: 6px; position: relative; }
+.heatmap-months { display: flex; gap: 3px; font-size: 10px; color: var(--muted-2); margin-bottom: 4px; width: max-content; }
+.heatmap { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, 1fr); gap: 3px; width: max-content; }
+.hcell {
+  width: 11px; height: 11px; border-radius: 3px; background: #161d26; border: 1px solid rgba(255, 255, 255, 0.03);
+  opacity: 0; transform: translate(-4px, -4px);
+}
+.hcell.hcell-in { animation: hcellIn 260ms var(--ease) forwards; }
+@keyframes hcellIn { to { opacity: 1; transform: translate(0, 0); } }
+.hcell[data-lvl="1"] { background: #0a3d2e; }
+.hcell[data-lvl="2"] { background: #0f6b4d; }
+.hcell[data-lvl="3"] { background: #10a06e; }
+.hcell[data-lvl="4"] { background: var(--grad); }
+.heatmap-legend { display: flex; align-items: center; gap: 4px; margin-top: 10px; font-size: 11px; color: var(--muted-2); }
+.heatmap-legend .hcell { width: 10px; height: 10px; opacity: 1; transform: none; }
+
+.tooltip {
+  position: fixed; background: #1c242e; border: 1px solid var(--border); border-radius: 8px;
+  padding: 6px 10px; font-size: 12px; pointer-events: none; z-index: 80; box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+  transform: translate(-50%, -115%); white-space: nowrap; max-width: 240px; white-space: normal;
+}
+
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.bar-row:last-child { margin-bottom: 0; }
+.bar-label { width: 120px; flex: none; font-size: 13px; display: flex; align-items: center; gap: 6px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bar-track { flex: 1; height: 10px; background: #0e141b; border-radius: 6px; overflow: hidden; border: 1px solid var(--border); }
+.bar-fill { height: 100%; border-radius: 6px; width: 0%; transition: width 900ms var(--ease); }
+.bar-pct { width: 38px; text-align: right; font-size: 12px; color: var(--muted); flex: none; }
+
+.totals-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+@media (min-width: 480px) { .totals-grid { grid-template-columns: repeat(4, 1fr); } }
+.total-box { text-align: center; }
+.total-box .num { font-size: 22px; font-weight: 700; }
+.total-box .lbl { font-size: 11px; color: var(--muted); margin-top: 2px; }
+
+.milestone-timeline { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.takeover {
+  position: fixed; inset: 0; z-index: 400; display: flex; align-items: center; justify-content: center;
+  background: rgba(4, 6, 9, 0.72); backdrop-filter: blur(10px);
+  animation: fadeUp 400ms var(--ease) both;
+}
+.takeover .panel {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 40px 32px; text-align: center; max-width: 360px; box-shadow: var(--shadow-lg);
+}
+.takeover .badge-big { font-size: 64px; margin-bottom: 12px; }
+.takeover h2 { font-size: 20px; margin-bottom: 8px; }
+.takeover p { color: var(--muted); font-size: 14px; margin-bottom: 20px; }
+
+/* ---------- Settings ---------- */
+.settings-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.settings-row .btn { flex: 1; min-width: 130px; }
+.accent-picker { display: flex; gap: 12px; }
+.accent-swatch {
+  width: 44px; height: 44px; border-radius: 50%; border: 2px solid transparent; cursor: pointer;
+  transition: transform 200ms var(--ease), border-color 200ms var(--ease);
+}
+.accent-swatch.sel { border-color: #fff; transform: scale(1.1); }
+
+/* ---------- Landing ---------- */
+.landing { position: relative; padding-top: 40px; text-align: center; }
+.landing h1 { font-size: clamp(32px, 6vw, 48px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 16px; }
+.landing .sub { color: var(--muted); font-size: 16px; max-width: 440px; margin: 0 auto 28px; }
+.landing .demo-row {
+  display: flex; flex-direction: column; align-items: center; gap: 18px; margin-top: 36px;
+}
+.demo-heatmap { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; max-width: 280px; margin: 0 auto; }
+.demo-cell { width: 100%; aspect-ratio: 1; border-radius: 3px; background: #161d26; opacity: 0; transform: scale(0.5); }
+.demo-cell.demo-in { animation: demoWave 400ms var(--ease-bounce) forwards; }
+@keyframes demoWave { to { opacity: 1; transform: scale(1); } }
+.demo-streak { font-size: 15px; color: var(--muted); }
+.demo-streak strong { color: var(--text); font-size: 28px; display: block; }
+
+canvas#confetti { position: fixed; inset: 0; pointer-events: none; z-index: 500; }
+
+@media (max-width: 400px) {
+  .hero { padding: 18px; gap: 14px; }
+  .hero .ring-wrap { width: 72px; height: 72px; }
+  .emoji-grid { grid-template-columns: repeat(6, 1fr); }
+  .bar-label { width: 90px; }
+}

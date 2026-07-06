@@ -1,0 +1,49 @@
+/*
+  Design tokens: CSS custom properties used across the whole app.
+  Do not hardcode colors/radii/shadows anywhere else — reference these vars.
+  --accent/--accent-2 are overridden at runtime (inline on :root) by the
+  accent picker in Settings (see js/ui/settings.js + js/state.js `state.accent`).
+*/
+:root {
+  --bg: #0a0c10;
+  --surface: #12151c;
+  --surface-2: #1a1e27;
+
+  --border: rgba(255, 255, 255, 0.07);
+  --border-hover: rgba(255, 255, 255, 0.14);
+
+  --text: #f2f4f8;
+  --muted: #8b93a3;
+  --muted-2: #5b6773;
+
+  --danger: #f87171;
+
+  /* Default accent preset ("default" — emerald/teal). Presets swap these two. */
+  --accent: #10b981;
+  --accent-2: #2dd4bf;
+  --grad: linear-gradient(135deg, var(--accent), var(--accent-2));
+
+  --radius: 16px;
+  --radius-lg: 24px;
+  --radius-sm: 10px;
+
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 10px 30px -12px rgba(0, 0, 0, 0.5);
+
+  --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-bounce: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Accent presets — applied by toggling a class on <html>, values read by js/ui/settings.js */
+html.accent-default {
+  --accent: #10b981;
+  --accent-2: #2dd4bf;
+}
+html.accent-sunset {
+  --accent: #fb923c;
+  --accent-2: #f472b6;
+}
+html.accent-violet {
+  --accent: #a78bfa;
+  --accent-2: #60a5fa;
+}
